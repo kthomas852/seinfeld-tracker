@@ -1,4 +1,7 @@
 /*These are the javascript fo the Seinfeld App*/
+//require('dotenv').config();
+//require('env2')('.env')
+
 let programsArry = [];
 let continuous = 0;
 let longest = 0;
@@ -7,12 +10,12 @@ let day = new Date();
 
  // Initialize Firebase
  var lego = {
-    apiKey: process.env.Key,
-    authDomain: process.env.Domain,
-    databaseURL: process.env.URL,
-    projectId: process.env.Id,
-    storageBucket: process.env.SB,
-    messagingSenderId: process.env.MSID
+    apiKey: config.KEY,
+    authDomain: config.DOMAIN,
+    databaseURL: config.URL,
+    projectId: config.ID,
+    storageBucket: config.SB,
+    messagingSenderId: config.MSID
   };
   firebase.initializeApp(lego);
   db = firebase.database();
@@ -72,9 +75,9 @@ const printList = () => {
         document.getElementById('progList').appendChild(div);
         document.getElementById('days').innerHTML = continuous;
         document.getElementById('longest').innerHTML = longest;
-        console.log(day.getHours());
-        console.log(programmed2Day);
     }
+    console.log(day.getHours());
+    console.log(programmed2Day);
 }
 
 //Adds a day to the Continous Days Programming field
@@ -116,7 +119,7 @@ db.ref('/').on('child_added', function(snapshot, prevChildKey){
     programsArry = snapshot.val().programsArry;
     continuous = snapshot.val().days;
     longest = snapshot.val().longRun;
-    programmed2Day = snapshot.val().programmed;
+    //programmed2Day = snapshot.val().programmed;
     printList();
 });
 
@@ -125,6 +128,6 @@ db.ref('/').on('child_changed', function(snapshot, prevChildKey){
     programsArry = snapshot.val().programsArry;
     continuous = snapshot.val().days;
     longest = snapshot.val().longRun;
-    programmed2Day = snapshot.val().programmed;
+    //programmed2Day = snapshot.val().programmed;
     printList();
 });
