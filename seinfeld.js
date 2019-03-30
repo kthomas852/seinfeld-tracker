@@ -1,4 +1,4 @@
-/*These are the javascript fo the Seinfeld App*/
+/*These are the javascript for the Seinfeld App*/
 //require('dotenv').config();
 //require('env2')('.env')
 
@@ -7,6 +7,7 @@ let continuous = 0;
 let longest = 0;
 let programmed2Day = false;
 let day = new Date();
+let date;
 
  // Initialize Firebase
  var lego = {
@@ -52,7 +53,9 @@ const addProgram = () => {
     };
     programsArry.push(newObj);
     console.log(programsArry);
-    db.ref('/root').update({days: continuous, programsArry: programsArry, programmed: programmed2Day});
+    const todaysDate = new Date();
+    // document.getElementById("demo").innerHTML = todaysDate.toDateString();
+    db.ref('/root').update({lastCodedDate: todaysDate.toDateString(), days: continuous, programsArry: programsArry, programmed: programmed2Day});
 }
 
 //Prints the list of all the programs that have been created
@@ -75,6 +78,7 @@ const printList = () => {
         document.getElementById('progList').appendChild(div);
         document.getElementById('days').innerHTML = continuous;
         document.getElementById('longest').innerHTML = longest;
+        document.getElementById('date').innerHTML = date;
     }
     console.log(day.getHours());
     console.log(programmed2Day);
@@ -87,7 +91,9 @@ const addDay = (id) => {
         programmed2Day = true;
     };
     let current = document.getElementById(id).getAttribute('value');
-    db.ref('/root').update({days: continuous, programmed: programmed2Day})
+    const todaysDate = new Date();
+    // document.getElementById("date").innerHTML = todaysDate.toDateString();
+    db.ref('/root').update({lastCodedDate: todaysDate.toDateString(), days: continuous, programmed: programmed2Day})
     db.ref('/root/programsArry').child(id).update({daysWorked: (parseInt(current) + 1)});
 }
 
@@ -119,6 +125,7 @@ db.ref('/').on('child_added', function(snapshot, prevChildKey){
     programsArry = snapshot.val().programsArry;
     continuous = snapshot.val().days;
     longest = snapshot.val().longRun;
+    date = snapshot.val().lastCodedDate;
     //programmed2Day = snapshot.val().programmed;
     printList();
 });
@@ -128,6 +135,7 @@ db.ref('/').on('child_changed', function(snapshot, prevChildKey){
     programsArry = snapshot.val().programsArry;
     continuous = snapshot.val().days;
     longest = snapshot.val().longRun;
+    date = snapshot.val().lastCodedDate;
     //programmed2Day = snapshot.val().programmed;
     printList();
 });
