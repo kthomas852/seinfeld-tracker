@@ -52,8 +52,7 @@ const addProgram = () => {
     };
     programsArry.push(newObj);
     console.log(programsArry);
-    db.ref('/root').update({programsArry: programsArry, programmed: programmed2Day});
-    db.ref('/root/programsArry').child(id).update({daysWorked: (parseInt(current) + 1)});
+    db.ref('/root').update({days: continuous, programsArry: programsArry, programmed: programmed2Day});
 }
 
 //Prints the list of all the programs that have been created
